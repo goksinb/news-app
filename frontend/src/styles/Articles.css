@@ -1,0 +1,16 @@
+body {
+  width: 100%;
+  margin: 0 auto;
+  font-family: "Times New Roman", Times, serif;
+}
+
+li {
+  list-style: none;
+}
+
+.article {
+  flex-direction: column;
+  border-bottom: 1px solid #ccc;
+  margin: 0 15rem;
+  text-align: justify;
+}
