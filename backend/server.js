@@ -2,13 +2,14 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
+import rateLimit from "express-rate-limit";
 
-dotenv.config(); // Load environment variables
+dotenv.config();
 
-// Initialize Express app
+// Start Express
 const app = express();
-app.use(express.json()); // Enable JSON body parsing
-app.use(cors()); // Enable CORS
+app.use(express.json());
+app.use(cors());
 
 // MongoDB connection
 const connectDB = async () => {
@@ -25,17 +26,36 @@ const connectDB = async () => {
 };
 
 // Start server and connect to MongoDB
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, async () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  await connectDB(); // Connect to MongoDB after the server starts
+const PORT = process.env.PORT || 5001;
+
+app
+  .listen(PORT, async () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    await connectDB();
+  })
+  .on("error", (err) => {
+    if (err.code === "EADDRINUSE") {
+      console.error(`❌ Port ${PORT} is already in use.`);
+      process.exit(1);
+    } else {
+      console.error(`❌ Server error:`, err);
+    }
+  });
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // Limit each IP to 100 requests per windowMs
+  message: "Too many requests from this IP, please try again later.",
 });
 
-// Article schema and model
+app.use(limiter); // apply to all routes
+
+// Article schema
 const articleSchema = new mongoose.Schema({
   title: {type: String, required: true},
   content: {type: String, required: true},
   author: {type: String, required: true},
+  category: {type: String, required: true},
   createdAt: {type: Date, default: Date.now},
 });
 const Article = mongoose.model("Article", articleSchema);
@@ -45,8 +65,8 @@ const Article = mongoose.model("Article", articleSchema);
 // POST: Create a new article
 app.post("/articles", async (req, res) => {
   try {
-    const {title, content, author} = req.body;
-    if (!title || !content || !author) {
+    const {title, content, author, category} = req.body;
+    if (!title || !content || !author || !category) {
       return res.status(400).json({message: "All fields are required"});
     }
 
@@ -54,6 +74,7 @@ app.post("/articles", async (req, res) => {
       title,
       content,
       author,
+      category,
       createdAt: new Date(),
     });
     await newArticle.save();
@@ -66,10 +87,18 @@ app.post("/articles", async (req, res) => {
 // GET: Fetch all articles
 app.get("/articles", async (req, res) => {
   try {
-    const articles = await Article.find();
+    const {category} = req.query; // Retrieve category from query string
+
+    let articles;
+    if (category) {
+      articles = await Article.find({category}); // Find articles with the given category
+    } else {
+      articles = await Article.find(); // If no category, fetch all articles
+    }
+
     res.json(articles);
   } catch (error) {
-    res.status(500).json({message: "Server error", error});
+    res.status(500).json({message: "Error fetching articles", error});
   }
 });
 
@@ -83,7 +112,7 @@ app.delete("/articles", async (req, res) => {
   }
 });
 
-// DELETE: Delete a single article by ID
+// DELETE by ID: Delete a single article by ID
 app.delete("/articles/:id", async (req, res) => {
   try {
     const {id} = req.params;
