@@ -1,17 +1,18 @@
 import React, {useState, useEffect} from "react";
-import "./styles/Articles.css";
+
+import "/global.css";
 
 function Articles() {
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/articles")
+    fetch("http://localhost:5001/articles")
       .then((response) => response.json())
       .then((data) => setArticles(data));
   }, []);
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:3000/articles/${id}`, {
+    fetch(`http://localhost:5001/articles/${id}`, {
       method: "DELETE",
     })
       .then((response) => {
@@ -29,10 +30,10 @@ function Articles() {
   console.log("Articles fetched:", articles);
 
   return (
-    <div className="App">
-      <div>
-        <h1>Today's Articles</h1>
-      </div>
+    <div className="width=100 mx-0 my-auto font-serif ">
+      <header>
+        <h1 className="bg">Today's Articles</h1>
+      </header>
       {articles.length === 0 ? (
         <p>No articles available.</p>
       ) : (
@@ -43,9 +44,10 @@ function Articles() {
                 <button onClick={() => handleDelete(article._id)}>
                   Remove article
                 </button>
-                <div className="article">
+                <div className="flex-col border-b-1 border-gray-200 my-0 mx-20 text-justify">
                   <h2>{article.title}</h2>
                   <p>Article by {article.author}</p>
+                  <p>Category: {article.category}</p>
                   <p>{article.content}</p>
                 </div>
               </li>
