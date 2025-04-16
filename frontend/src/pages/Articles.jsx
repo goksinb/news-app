@@ -42,14 +42,14 @@ function Articles() {
       >
         <Banner />
       </div>
-      <header className="border-b border-gray-300 py-4 px-4 md:px-8 bg-white">
+      <header className="border-b border-gray-300 py-4 px-4 md:px-8">
         <div className="max-w-5xl mx-auto flex justify-between items-center">
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
             Daily Articles
           </h1>
           <Link
             to="/create-article"
-            className="text-sm text-blue-700 hover:underline font-sans"
+            className="text-sm text-blue-800 hover:underline font-sans"
           >
             Create New Article
           </Link>
@@ -65,8 +65,8 @@ function Articles() {
         ) : (
           <ul className="space-y-10">
             {articles.map((article) => (
-              <li key={article._id} className="border-b pb-6">
-                <h2 className="text-2xl font-semibold mb-1">{article.title}</h2>
+              <li key={article._id}>
+                <Link to={`/articles/${article._id}`}>{article.title} </Link>
                 <p className="text-sm text-gray-600 mb-3 font-sans">
                   By {article.author} · {article.category}
                 </p>
@@ -75,7 +75,7 @@ function Articles() {
                 </p>
                 <button
                   onClick={() => handleDelete(article._id)}
-                  className="mt-4 text-red-600 hover:underline text-sm font-sans"
+                  className="mt-4 text-black bg-gray-300 hover:underline text-sm font-sans"
                 >
                   Remove article
                 </button>
@@ -86,7 +86,7 @@ function Articles() {
       </main>
 
       {/* Footer */}
-      <footer className="text-center text-xs text-gray-500 mt-12 py-4 border-t">
+      <footer className="text-center text-xs text-gray-500 mt-12 py-4x">
         ------------------------
       </footer>
     </div>

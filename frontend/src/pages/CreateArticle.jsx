@@ -6,7 +6,6 @@ function CreateArticle() {
   const [author, setAuthor] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("");
-
   const [articles, setArticles] = useState([]);
 
   const handleSubmit = (event) => {
@@ -50,9 +49,10 @@ function CreateArticle() {
 
   return (
     <form onSubmit={handleSubmit} className=" flex flex-col">
-      <h1 className="bg">Create a new article</h1>
+      <h1>Create a new article</h1>
       <label htmlFor="title">Title:</label>
       <input
+        className="bg-gray-200 rounded-md p-2 mb-4"
         type="text"
         id="title"
         name="title"
@@ -61,6 +61,7 @@ function CreateArticle() {
       />
       <label htmlFor="author">Author:</label>
       <input
+        className="bg-gray-200 rounded-md p-2 mb-4"
         type="text"
         id="author"
         name="author"
@@ -68,7 +69,9 @@ function CreateArticle() {
         onChange={(e) => setAuthor(e.target.value)}
       />
       <label htmlFor="content">Content:</label>
+
       <textarea
+        className="bg-gray-200 rounded-md p-2 mb-4"
         id="content"
         name="content"
         value={content}
@@ -76,13 +79,16 @@ function CreateArticle() {
       ></textarea>
       <label htmlFor="category">Category:</label>
       <input
+        className="bg-gray-200 rounded-md p-2 mb-4"
         type="text"
         id="category"
         name="category"
         value={category}
         onChange={(e) => setCategory(e.target.value)}
       />
-      <button type="submit">Submit Article</button>
+      <button type="submit" className="bg-blue-500 text-white">
+        Submit Article
+      </button>
       <Link to="/">Go to Homepage</Link>
     </form>
   );
