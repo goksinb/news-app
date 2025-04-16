@@ -16,12 +16,14 @@ const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
+
       useUnifiedTopology: true,
     });
     console.log("✅ MongoDB Connected");
   } catch (error) {
     console.error("❌ MongoDB Connection Error:", error);
-    process.exit(1); // Exit if connection fails
+    // Exit if connection fails
+    process.exit(1);
   }
 };
 
@@ -43,14 +45,16 @@ app
   });
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // Limit each IP to 100 requests per windowMs
+  windowMs: 15 * 60 * 1000,
+  // limit each IP to 40 requests
+  max: 40,
   message: "Too many requests from this IP, please try again later.",
 });
 
-app.use(limiter); // apply to all routes
+// apply to all routes
+app.use(limiter);
 
-// Article schema
+// article schema
 const articleSchema = new mongoose.Schema({
   title: {type: String, required: true},
   content: {type: String, required: true},
@@ -60,7 +64,16 @@ const articleSchema = new mongoose.Schema({
 });
 const Article = mongoose.model("Article", articleSchema);
 
-// Routes
+const logSchema = new mongoose.Schema({
+  action: {type: String, required: true},
+  articleId: {type: mongoose.Schema.Types.ObjectId, ref: "Article"},
+  timestamp: {type: Date, default: Date.now},
+  title: {type: String, required: true},
+});
+
+const Log = mongoose.model("Log", logSchema);
+
+// ROUTES
 
 // POST: Create a new article
 app.post("/articles", async (req, res) => {
@@ -78,6 +91,16 @@ app.post("/articles", async (req, res) => {
       createdAt: new Date(),
     });
     await newArticle.save();
+
+    // Save log for article creation
+    const log = new Log({
+      action: "POST",
+      articleId: newArticle._id,
+      title: newArticle.title,
+    });
+    await log.save();
+    console.log("✅ Log saved for article creation");
+
     res.status(201).json({message: "Article created", article: newArticle});
   } catch (error) {
     res.status(500).json({message: "Server error", error});
@@ -87,13 +110,15 @@ app.post("/articles", async (req, res) => {
 // GET: Fetch all articles
 app.get("/articles", async (req, res) => {
   try {
-    const {category} = req.query; // Retrieve category from query string
+    const {category} = req.query;
 
     let articles;
     if (category) {
-      articles = await Article.find({category}); // Find articles with the given category
+      // Find articles with  category
+      articles = await Article.find({category});
     } else {
-      articles = await Article.find(); // If no category, fetch all articles
+      // If no category, fetch all articles
+      articles = await Article.find();
     }
 
     res.json(articles);
@@ -106,7 +131,15 @@ app.get("/articles", async (req, res) => {
 app.delete("/articles", async (req, res) => {
   try {
     await Article.deleteMany({});
-    res.json({message: "All articles deleted"});
+
+    const log = new Log({
+      action: "DELETE",
+      title: "All articles",
+    });
+    await log.save();
+    console.log("✅ Log saved for bulk deletion");
+
+    res.status(200).json({message: "All articles deleted successfully"});
   } catch (error) {
     res.status(500).json({message: "Server error", error});
   }
@@ -122,7 +155,18 @@ app.delete("/articles/:id", async (req, res) => {
       return res.status(404).json({message: "Article not found"});
     }
 
-    res.json({message: "Article deleted", article: deletedArticle});
+    res.json({
+      message: "Article deleted successfully",
+      article: deletedArticle,
+    });
+
+    const log = new Log({
+      action: "DELETE",
+      articleId: deletedArticle._id,
+      title: deletedArticle.title,
+    });
+    await log.save();
+    console.log("✅ Log saved for article deletion");
   } catch (error) {
     res.status(500).json({message: "Server error", error});
   }
