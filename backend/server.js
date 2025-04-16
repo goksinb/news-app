@@ -127,6 +127,33 @@ app.get("/articles", async (req, res) => {
   }
 });
 
+// GET: Fetch article by ID
+app.get("/articles/:id", async (req, res) => {
+  try {
+    const {id} = req.params;
+    const article = await Article.findById(id);
+
+    if (!article) {
+      return res.status(404).json({message: "Article not found"});
+    }
+
+    res.json({
+      message: "Article fetched successfully",
+      article: article,
+    });
+
+    const log = new Log({
+      action: "GET",
+      articleId: article._id,
+      title: article.title,
+    });
+    await log.save();
+    console.log("✅ Log saved for article fetching");
+  } catch (error) {
+    res.status(500).json({message: "Server error", error});
+  }
+});
+
 // DELETE: Delete all articles
 app.delete("/articles", async (req, res) => {
   try {
