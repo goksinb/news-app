@@ -1,6 +1,6 @@
-How to Start the App
+### How to Start the App
 
-1. Make sure you have Node.js and MongoDB installed.
+1. Install Node.js and MongoDB.
 
 2. Clone the repository and run the following in the project folder:
 
@@ -15,7 +15,7 @@ How to Start the App
 
    node server.js
 
-This is a basic blog/news API that allows you to:
+### This is a basic blog/news API that allows you to:
 
     Create new articles (POST /articles)
 
@@ -27,4 +27,4 @@ This is a basic blog/news API that allows you to:
 
     Delete one article by ID (DELETE /articles/:id)
 
-The app includes rate limiting, form validation, and logging for safety and performance.
+### The app includes rate limiting, form validation, and logging for safety.
