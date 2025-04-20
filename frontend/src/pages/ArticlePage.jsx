@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import {useState, useEffect} from "react";
 
-const ArticleDetail = () => {
+const ArticlePage = () => {
   const {id} = useParams();
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -48,4 +48,4 @@ function fdfsfdsfs() {
   fdsfdsfdsf;
 }
 
-export default ArticleDetail;
+export default ArticlePage;
