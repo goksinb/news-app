@@ -1,6 +1,6 @@
-function Banner() {
+function PrivacyBanner() {
   return (
-    <div className="bg-gray-100 text-center text-xs text-gray-600 py-2 px-4">
+    <div>
       <p>
         This website logs content creation and deletion actions to improve
         functionality. No personal data is collected or stored.
@@ -9,4 +9,4 @@ function Banner() {
   );
 }
 
-export default Banner;
+export default PrivacyBanner;
