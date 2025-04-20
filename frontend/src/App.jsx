@@ -1,17 +1,16 @@
 import "./App.css";
-import Articles from "./pages/Articles.jsx";
+import Homepage from "./pages/Homepage.jsx";
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import CreateArticle from "./pages/CreateArticle.jsx";
-import Banner from "./components/Banner.jsx";
-import ArticleDetail from "./pages/ArticleDetail.jsx";
+import ArticlePage from "./pages/ArticlePage.jsx";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Articles />} />
+        <Route path="/" element={<Homepage />} />
         <Route path="/create-article" element={<CreateArticle />} />
-        <Route path="/articles/:id" element={<ArticleDetail />} />
+        <Route path="/articles/:id" element={<ArticlePage />} />
       </Routes>
     </Router>
   );
