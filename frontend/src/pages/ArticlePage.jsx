@@ -1,5 +1,6 @@
 import {useParams} from "react-router-dom";
 import {useState, useEffect} from "react";
+import Header from "../components/Header.jsx";
 
 const ArticlePage = () => {
   const {id} = useParams();
@@ -32,6 +33,7 @@ const ArticlePage = () => {
 
   return (
     <div style={{padding: "1rem"}}>
+      <Header />
       <h2>{article.title}</h2>
       <p>
         <strong>Author:</strong> {article.author}
@@ -43,9 +45,5 @@ const ArticlePage = () => {
     </div>
   );
 };
-
-function fdfsfdsfs() {
-  fdsfdsfdsf;
-}
 
 export default ArticlePage;

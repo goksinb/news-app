@@ -1,4 +1,3 @@
-import "./App.css";
 import Homepage from "./pages/Homepage.jsx";
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import CreateArticle from "./pages/CreateArticle.jsx";
