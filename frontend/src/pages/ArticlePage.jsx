@@ -1,6 +1,7 @@
 import {useParams} from "react-router-dom";
 import {useState, useEffect} from "react";
 import Header from "../components/Header.jsx";
+import bannerImg from "../assets/images/articleImg.webp";
 
 const ArticlePage = () => {
   const {id} = useParams();
@@ -32,16 +33,23 @@ const ArticlePage = () => {
   if (error) return <p style={{color: "red"}}>{error}</p>;
 
   return (
-    <div style={{padding: "1rem"}}>
+    <div className="article-page">
       <Header />
-      <h2>{article.title}</h2>
-      <p>
-        <strong>Author:</strong> {article.author}
+      <div className="article-page-details">
+        <div className="article-page-meta">
+          <h1>{article.title}</h1>
+          <p>
+            {article.author} · {article.category}
+          </p>
+        </div>
+        <div className="article-detail-image">
+          <img src={bannerImg} alt="Banner" className="banner-image" />
+        </div>
+      </div>
+
+      <p className="article-content" style={{marginTop: "1rem"}}>
+        {article.content}
       </p>
-      <p>
-        <strong>Category:</strong> {article.category}
-      </p>
-      <p style={{marginTop: "1rem"}}>{article.content}</p>
     </div>
   );
 };

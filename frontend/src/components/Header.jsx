@@ -3,7 +3,9 @@ import {Link} from "react-router-dom";
 export default function Header() {
   return (
     <header className="header-container">
-      <h1 className="site-title">THE ARTICLE</h1>
+      <Link to="/" className="site-title">
+        <h1>THE ARTICLE</h1>
+      </Link>
 
       <div className="header-links">
         <Link to="/" className="header-link">
