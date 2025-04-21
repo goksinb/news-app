@@ -3,6 +3,8 @@ import "/global.css";
 import "/src/styles/Homepage.css";
 import {Link} from "react-router-dom";
 import PrivacyBanner from "../components/PrivacyBanner.jsx";
+import bannerImg from "../assets/images/bannerImg.webp";
+import Header from "../components/Header.jsx";
 
 function Homepage() {
   const [articles, setArticles] = useState([]);
@@ -34,30 +36,13 @@ function Homepage() {
       <div className="privacy-banner">
         <PrivacyBanner />
       </div>
-      <header className="header-container">
-        <h1 className="site-title">THE ARTICLE</h1>
-
-        <div className="header-links">
-          <Link to="/" className="header-link">
-            Home
-          </Link>
-          <Link to="/culture" className="header-link">
-            Culture
-          </Link>
-          <Link to="/science" className="header-link">
-            Science
-          </Link>
-          <Link to="/literature" className="header-link">
-            Literature
-          </Link>
-
-          {/*   <Link to="/create-article" className="create-link">
-            Create New Article
-          </Link> */}
-        </div>
-      </header>
-
+      <Header />
       {/* Articles */}
+      <div className="banner-container">
+        <div className="banner-image">
+          <img src={bannerImg} alt="Banner" className="banner-image" />
+        </div>
+      </div>
       <main className="articles-section">
         {articles.length === 0 ? (
           <p className="no-articles">No articles available.</p>
@@ -65,15 +50,18 @@ function Homepage() {
           <ul className="article-list">
             {articles.map((article) => (
               <li key={article._id} className="article">
-                <img src="https://placehold.co/250x200" alt="" />
-                <Link to={`/articles/${article._id}`} className="article-title">
-                  {article.title}
-                </Link>
-                <p className="article-meta">
-                  By {article.author} · {article.category}
-                </p>
-                <p className="article-content">{article.content}</p>
-                {/*   */}
+                <img src="https://placehold.co/250x200" alt="Banner" />
+                <div className="article-bottom">
+                  {/*   <p className="article-meta">
+                    By {article.author} · {article.category}
+                  </p> */}
+                  <Link
+                    to={`/articles/${article._id}`}
+                    className="article-title"
+                  >
+                    {article.title}
+                  </Link>
+                </div>
               </li>
             ))}
           </ul>
