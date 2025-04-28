@@ -47,7 +47,7 @@ app
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   // limit each IP to 40 requests
-  max: 40,
+  max: 5,
   message: "Too many requests from this IP, please try again later.",
 });
 
