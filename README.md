@@ -41,22 +41,22 @@ Delete one article by ID (DELETE /articles/:id)
 
   ## Core API Features (Completed)
 
-  - [✔] Set up GET, POST, and DELETE endpoints
-  - [✔] Fetch individual articles
-  - [✔] Delete individual articles
-  - [✔] Track POST and DELETE actions with logs
-  - [✔] Serve a performance report and explain optimization process
-  - [✔] Display privacy policy and comply with basic GDPR considerations
-  - [✔] Ensure stateless API with persistent database
+  - [X] Set up GET, POST, and DELETE endpoints
+  - [X] Fetch individual articles
+  - [X] Delete individual articles
+  - [X] Track POST and DELETE actions with logs
+  - [X] Serve a performance report and explain optimization process
+  - [X] Display privacy policy and comply with basic GDPR considerations
+  - [X] Ensure stateless API with persistent database
 
   ## Tracking & Reporting (Completed)
 
-  - [✔] Implement privacy-conscious user action tracking
-  - [✔] Include a “Privacy Note” in frontend
-  - [✔] Write security report on vulnerabilities and mitigations
-  - [✔] Write accessibility & SEO explanation
+  - [X] Implement privacy-conscious user action tracking
+  - [X] Include a “Privacy Note” in frontend
+  - [X] Write security report on vulnerabilities and mitigations
+  - [X] Write accessibility & SEO explanation
 
   ## Accessibility (Completed)
 
-  - [✔] Use htmlFor/for to improve form usability
-  - [✔] Ensure accessible markup throughout the app
+  - [X] Use htmlFor/for to improve form usability
+  - [X] Ensure accessible markup throughout the app
