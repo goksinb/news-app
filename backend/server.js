@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 dotenv.config();
 
@@ -73,7 +75,14 @@ const logSchema = new mongoose.Schema({
 
 const Log = mongoose.model("Log", logSchema);
 
+const adminUser = {
+  username: process.env.ADMIN_USERNAME,
+  passwordHash: bcrypt.hashSync(process.env.ADMIN_PASSWORD, 10),
+};
+
 // ROUTES
+
+// Middleware to check if the user is an admin
 
 // POST: Create a new article
 app.post("/articles", async (req, res) => {
