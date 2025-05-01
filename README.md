@@ -33,30 +33,30 @@ Delete one article by ID (DELETE /articles/:id)
 - [ ] Implement search functionality
 - [ ] Improve mobile responsiveness
 - [ ] Add search & filter functionality
-- [ ] Add admin login for posting news
+- [x] Add admin login for posting news
 - [ ] Add PUT endpoint to update existing articles
-- [ ] Review and either remove or implement categories
+- [ ] Review and implement categories
 - [ ] Add payment system for subscriptions
 - [ ] Add notifications for newly published articles
 
   ## Core API Features (Completed)
 
-  - [X] Set up GET, POST, and DELETE endpoints
-  - [X] Fetch individual articles
-  - [X] Delete individual articles
-  - [X] Track POST and DELETE actions with logs
-  - [X] Serve a performance report and explain optimization process
-  - [X] Display privacy policy and comply with basic GDPR considerations
-  - [X] Ensure stateless API with persistent database
+  - [x] Set up GET, POST, and DELETE endpoints
+  - [x] Fetch individual articles
+  - [x] Delete individual articles
+  - [x] Track POST and DELETE actions with logs
+  - [x] Serve a performance report and explain optimization process
+  - [x] Display privacy policy and comply with basic GDPR considerations
+  - [x] Ensure stateless API with persistent database
 
   ## Tracking & Reporting (Completed)
 
-  - [X] Implement privacy-conscious user action tracking
-  - [X] Include a “Privacy Note” in frontend
-  - [X] Write security report on vulnerabilities and mitigations
-  - [X] Write accessibility & SEO explanation
+  - [x] Implement privacy-conscious user action tracking
+  - [x] Include a “Privacy Note” in frontend
+  - [x] Write security report on vulnerabilities and mitigations
+  - [x] Write accessibility & SEO explanation
 
   ## Accessibility (Completed)
 
-  - [X] Use htmlFor/for to improve form usability
-  - [X] Ensure accessible markup throughout the app
+  - [x] Use htmlFor/for to improve form usability
+  - [x] Ensure accessible markup throughout the app
