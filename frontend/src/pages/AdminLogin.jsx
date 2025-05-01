@@ -1,8 +1,10 @@
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 function AdminLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -19,6 +21,7 @@ function AdminLogin() {
       if (res.ok) {
         localStorage.setItem("token", data.token);
         alert("Login successful!");
+        navigate("/");
       } else {
         alert(data.message);
       }
