@@ -101,7 +101,7 @@ app.post("/admin/login", async (req, res) => {
 
   // Generate a JWT token
   const token = jwt.sign(
-    {username: process.env.ADMIN_USERNAME}, // Payload
+    {username: process.env.ADMIN_USERNAME, role: "admin"}, // Payload
     process.env.JWT_SECRET, // Secret key
     {expiresIn: "2h"} // Token expiration
   );

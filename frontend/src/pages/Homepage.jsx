@@ -5,19 +5,42 @@ import {Link} from "react-router-dom";
 import PrivacyBanner from "../components/PrivacyBanner.jsx";
 import bannerImg from "../assets/images/bannerImg.webp";
 import Header from "../components/Header.jsx";
+import {jwtDecode} from "jwt-decode";
 
 function Homepage() {
   const [articles, setArticles] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        console.log(decoded); // Log to check the decoded token
+
+        // Check if the decoded role is 'admin'
+        if (decoded && decoded.username === "admin") {
+          setIsAdmin(true);
+        }
+      } catch (err) {
+        console.error("Invalid token", err);
+      }
+    }
+
+    // Fetch articles
     fetch("http://localhost:5001/articles")
       .then((response) => response.json())
-      .then((data) => setArticles(data));
+      .then((data) => setArticles(data))
+      .catch((err) => console.error("Failed to fetch articles", err));
   }, []);
 
   const handleDelete = (id) => {
     fetch(`http://localhost:5001/articles/${id}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`, // include token
+      },
     })
       .then((response) => {
         if (!response.ok) {
@@ -61,6 +84,14 @@ function Homepage() {
                   >
                     {article.title}
                   </Link>
+                  {isAdmin && (
+                    <button
+                      onClick={() => handleDelete(article._id)}
+                      className="delete-button"
+                    >
+                      Delete
+                    </button>
+                  )}
                 </div>
               </li>
             ))}
