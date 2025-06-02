@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import "/src/styles/CreateArticle.css";
 import {Link} from "react-router-dom";
 
 function CreateArticle() {
@@ -48,49 +49,48 @@ function CreateArticle() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className=" flex flex-col">
-      <h1>Create a new article</h1>
-      <label htmlFor="title">Title:</label>
-      <input
-        className="bg-gray-200 rounded-md p-2 mb-4"
-        type="text"
-        id="title"
-        name="title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <label htmlFor="author">Author:</label>
-      <input
-        className="bg-gray-200 rounded-md p-2 mb-4"
-        type="text"
-        id="author"
-        name="author"
-        value={author}
-        onChange={(e) => setAuthor(e.target.value)}
-      />
-      <label htmlFor="content">Content:</label>
-
-      <textarea
-        className="bg-gray-200 rounded-md p-2 mb-4"
-        id="content"
-        name="content"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-      ></textarea>
-      <label htmlFor="category">Category:</label>
-      <input
-        className="bg-gray-200 rounded-md p-2 mb-4"
-        type="text"
-        id="category"
-        name="category"
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-      />
-      <button type="submit" className="bg-blue-500 text-white">
-        Submit Article
-      </button>
-      <Link to="/">Go to Homepage</Link>
-    </form>
+    <div className="create-article-container">
+      <form onSubmit={handleSubmit}>
+        <h1>Create a new article</h1>
+        <label htmlFor="title">Title:</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <label htmlFor="author">Author:</label>
+        <input
+          type="text"
+          id="author"
+          name="author"
+          value={author}
+          onChange={(e) => setAuthor(e.target.value)}
+        />
+        <label htmlFor="content">Content:</label>
+        <textarea
+          id="content"
+          name="content"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        ></textarea>
+        <label htmlFor="category">Category:</label>
+        <input
+          type="text"
+          id="category"
+          name="category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        />
+        <div className="button-container">
+          <button type="submit">Submit Article</button>
+          <div className="link">
+            <Link to="/">Go to Homepage</Link>
+          </div>
+        </div>
+      </form>
+    </div>
   );
 }
 

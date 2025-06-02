@@ -1,0 +1,91 @@
+form {
+  width: 45%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: black;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  box-sizing: border-box;
+  color: black;
+}
+
+textarea {
+  width: 100%;
+  height: 200px;
+  padding: 10px;
+  margin: 10px 0;
+  box-sizing: border-box;
+  color: black;
+}
+
+input,
+textarea {
+  background-color: #e6e6e6;
+  color: #000000;
+  border: 1px solid #808080;
+  border-radius: 10px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  box-sizing: border-box;
+  background-color: #367e37;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.link a {
+  background-color: #010891;
+  padding: 10px 10px;
+  border-radius: 10px;
+  color: #ffffff;
+  width: 100%;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #1d1d1d;
+    color: #ffffff;
+  }
+
+  form {
+    color: #ffffff;
+  }
+
+  input,
+  textarea {
+    background-color: #cecece;
+    color: #000000;
+    border: 1px solid #cbcbcb;
+  }
+
+  button {
+    background-color: #377d39;
+    color: #ffffff;
+  }
+
+  .link a {
+    background-color: #6369d8;
+    color: #ffffff;
+  }
+  form {
+    color: rgb(255, 255, 255);
+  }
+}

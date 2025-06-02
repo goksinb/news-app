@@ -3,8 +3,11 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
+import Stripe from "stripe";
 
 dotenv.config();
+console.log("Stripe Secret Key:", process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // Start Express
 const app = express();
@@ -74,6 +77,40 @@ const logSchema = new mongoose.Schema({
 const Log = mongoose.model("Log", logSchema);
 
 // ROUTES
+
+//STRIPE
+
+app.post("/create-subscription", async (req, res) => {
+  try {
+    const {email} = req.body;
+
+    // 1. Create a customer
+    const customer = await stripe.customers.create({
+      email,
+    });
+
+    // 2. Create a checkout session
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "subscription",
+      customer: customer.id,
+      line_items: [
+        {
+          price: "price_1RGQbXFYaRWQqNB4N7o0i1NQ",
+          quantity: 1,
+        },
+      ],
+      success_url: "http://localhost:3000/success", // Adjust to your frontend
+      cancel_url: "http://localhost:3000/cancel",
+    });
+
+    // Return the checkout URL to the frontend
+    res.json({url: session.url});
+  } catch (error) {
+    console.error("Stripe error:", error);
+    res.status(500).json({message: "Something went wrong", error});
+  }
+});
 
 // POST: Create a new article
 app.post("/articles", async (req, res) => {
