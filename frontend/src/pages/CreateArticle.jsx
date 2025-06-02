@@ -18,11 +18,13 @@ function CreateArticle() {
       content,
       category,
     };
+    const token = localStorage.getItem("token");
 
     fetch("http://localhost:5001/articles", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, //
       },
       body: JSON.stringify(newArticle),
     })
