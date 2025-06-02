@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
-import Stripe from "stripe";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 dotenv.config();
 console.log("Stripe Secret Key:", process.env.STRIPE_SECRET_KEY);
@@ -50,7 +51,7 @@ app
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   // limit each IP to 40 requests
-  max: 40,
+  max: 60,
   message: "Too many requests from this IP, please try again later.",
 });
 
@@ -76,44 +77,60 @@ const logSchema = new mongoose.Schema({
 
 const Log = mongoose.model("Log", logSchema);
 
+const adminUser = {
+  username: process.env.ADMIN_USERNAME,
+  password: process.env.ADMIN_PASSWORD, // NO hash
+};
+
 // ROUTES
 
-//STRIPE
+app.post("/admin/login", async (req, res) => {
+  const {username, password} = req.body;
 
-app.post("/create-subscription", async (req, res) => {
-  try {
-    const {email} = req.body;
-
-    // 1. Create a customer
-    const customer = await stripe.customers.create({
-      email,
-    });
-
-    // 2. Create a checkout session
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      mode: "subscription",
-      customer: customer.id,
-      line_items: [
-        {
-          price: "price_1RGQbXFYaRWQqNB4N7o0i1NQ",
-          quantity: 1,
-        },
-      ],
-      success_url: "http://localhost:3000/success", // Adjust to your frontend
-      cancel_url: "http://localhost:3000/cancel",
-    });
-
-    // Return the checkout URL to the frontend
-    res.json({url: session.url});
-  } catch (error) {
-    console.error("Stripe error:", error);
-    res.status(500).json({message: "Something went wrong", error});
+  // Check if username matches the stored admin username
+  if (username !== process.env.ADMIN_USERNAME) {
+    return res.status(401).json({message: "Invalid credentials"});
   }
+
+  // Compare the entered password with the hashed password from the environment variables
+  const isPasswordValid = await bcrypt.compare(
+    password,
+    process.env.ADMIN_PASSWORD_HASH
+  );
+  if (!isPasswordValid) {
+    return res.status(401).json({message: "Invalid credentials"});
+  }
+
+  // Generate a JWT token
+  const token = jwt.sign(
+    {username: process.env.ADMIN_USERNAME, role: "admin"}, // Payload
+    process.env.JWT_SECRET, // Secret key
+    {expiresIn: "2h"} // Token expiration
+  );
+
+  res.json({message: "Login successful", token});
 });
 
+// JWT auth middleware
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1]; // Bearer token
+
+  if (!token) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.sendStatus(403); // Forbidden
+    }
+    req.user = user;
+    next();
+  });
+};
+
 // POST: Create a new article
-app.post("/articles", async (req, res) => {
+app.post("/articles", authenticateToken, async (req, res) => {
   try {
     const {title, content, author, category} = req.body;
     if (!title || !content || !author || !category) {
@@ -192,7 +209,7 @@ app.get("/articles/:id", async (req, res) => {
 });
 
 // DELETE: Delete all articles
-app.delete("/articles", async (req, res) => {
+app.delete("/articles", authenticateToken, async (req, res) => {
   try {
     await Article.deleteMany({});
 

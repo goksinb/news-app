@@ -8,6 +8,9 @@ export default function Header() {
       </Link>
 
       <div className="header-links">
+        <Link to="/admin/login" className="admin-login-link">
+          Admin Login
+        </Link>
         <Link to="/" className="header-link">
           Home
         </Link>
